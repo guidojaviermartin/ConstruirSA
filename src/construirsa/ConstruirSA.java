@@ -66,7 +66,14 @@ public class ConstruirSA {
                 System.out.println("ID Herramienta: " + rs.getInt("id_herramienta")+ ", Nombre: " + rs.getString("nombre")+ ", Descripcion: " 
                         +rs.getString("descripcion") + ", Stock: " + rs.getInt("stock") + ", Estado: " + rs.getInt("estado"));
             }
-                 
+             
+            String sql4 = "SELECT id_empleado AS pidEmp FROM empleado ORDER BY id_empleado";
+            ResultSet rs2 = pStat(conexion, sql4).executeQuery();
+            int primer_idEmpleado;
+            if (rs2.next()) {
+                primer_idEmpleado =  rs2.getInt("pidEmp");
+                System.out.println("Primer id_empleado: " +primer_idEmpleado); 
+            }  
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar el Driver"+ex.getMessage());
             
