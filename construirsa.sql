@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-04-2024 a las 03:58:04
+-- Tiempo de generación: 11-05-2024 a las 18:52:52
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -29,6 +29,7 @@ USE `construirsa`;
 -- Estructura de tabla para la tabla `empleado`
 --
 
+DROP TABLE IF EXISTS `empleado`;
 CREATE TABLE IF NOT EXISTS `empleado` (
   `id_empleado` int(11) NOT NULL AUTO_INCREMENT,
   `dni` bigint(20) NOT NULL,
@@ -38,16 +39,19 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   `estado` tinyint(4) NOT NULL,
   PRIMARY KEY (`id_empleado`),
   UNIQUE KEY `dni` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `empleado`
 --
 
 INSERT INTO `empleado` (`id_empleado`, `dni`, `apellido`, `nombre`, `acceso`, `estado`) VALUES
-(1, 16789456, 'Mendez', 'Juan', 1, 1),
+(1, 16789456, 'Mendez', 'Juan', 1, 0),
 (2, 24753951, 'Sosa', 'Guillermo', 1, 0),
-(3, 11254986, 'Fernandez', 'Santiago', 1, 1);
+(3, 11254986, 'Fernandez', 'Santiago', 1, 1),
+(52, 2838847, 'Argento', 'Pepe', 1, 1),
+(53, 31543492, 'Hetfield', 'James', 1, 1),
+(54, 4574832, 'Barilari', 'Adrian', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -55,6 +59,7 @@ INSERT INTO `empleado` (`id_empleado`, `dni`, `apellido`, `nombre`, `acceso`, `e
 -- Estructura de tabla para la tabla `herramienta`
 --
 
+DROP TABLE IF EXISTS `herramienta`;
 CREATE TABLE IF NOT EXISTS `herramienta` (
   `id_herramienta` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(60) NOT NULL,
@@ -62,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `herramienta` (
   `stock` int(11) NOT NULL,
   `estado` tinyint(4) NOT NULL,
   PRIMARY KEY (`id_herramienta`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `herramienta`
@@ -73,7 +78,9 @@ INSERT INTO `herramienta` (`id_herramienta`, `nombre`, `descripcion`, `stock`, `
 (2, 'Martillo', 'Martillo carpintero 1/2kg 12\' ', 20, 1),
 (3, 'Pala', 'Pala punta corazon cabo de madera', 25, 1),
 (4, 'Tenaza', 'Tenaza de encofrador 8 pulgadas Bremen', 25, 1),
-(5, 'Pico', 'Pico doble punta con cabo de madera', 20, 0);
+(5, 'Pico', 'Pico doble punta con cabo de madera', 20, 0),
+(18, 'Pinza de punta', 'Pinza de 8 pulgadas con alicate', 3, 1),
+(19, 'Destornillador electrico', 'Makita', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -81,6 +88,7 @@ INSERT INTO `herramienta` (`id_herramienta`, `nombre`, `descripcion`, `stock`, `
 -- Estructura de tabla para la tabla `movimiento`
 --
 
+DROP TABLE IF EXISTS `movimiento`;
 CREATE TABLE IF NOT EXISTS `movimiento` (
   `id_movimiento` int(11) NOT NULL AUTO_INCREMENT,
   `id_empleado` int(11) NOT NULL,
