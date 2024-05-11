@@ -46,34 +46,60 @@ public class ConstruirSA {
                         + "VALUES ('Pinza de punta', 'Pinza de 8 pulgadas con alicate',3,1),"
                         + "('Destornillador electrico','Makita',5,1)";
             
-            //Creando objeto de PREPAREDSTATEMENT para sql2  //Invocando a EXECUTEUPDATE para ps2
-            int filas2=pStat(conexion, sql2).executeUpdate();
+            int filas2=pStat(conexion, sql2).executeUpdate(); //llamando al metodo pStat de PREPAREDSTATEMENT con parametros sql2 y la conexion y ejecutando al mismo tiempo
              if(filas2 >0){
                  JOptionPane.showMessageDialog(null, "herramienta/s agregada/s exitosamente!");             
              }
              
-            String sql3 = "SELECT * FROM herramienta WHERE stock > 10";
-            
-            //Creando objeto de PREPAREDSTATEMENT para sql3
-//            PreparedStatement ps3 = conexion.prepareStatement(sql3);
-            
-            //Creando objeto ResultSet para ejecutar la consulta sql3         
-            ResultSet rs = pStat(conexion, sql3).executeQuery();
-               
-            //ResultSet de la consulta
+            String sql5 = "SELECT * FROM herramienta WHERE stock > 10"; //QUERIE
+                   
+            ResultSet rs = pStat(conexion, sql5).executeQuery(); //Creando objeto rs del tipo ResultSet para almacenar la ejecucion de la consulta sql5  
+           
             System.out.println("Herramientas con stock superior a 10:");
             while (rs.next()) {
-                System.out.println("ID Herramienta: " + rs.getInt("id_herramienta")+ ", Nombre: " + rs.getString("nombre")+ ", Descripcion: " 
-                        +rs.getString("descripcion") + ", Stock: " + rs.getInt("stock") + ", Estado: " + rs.getInt("estado"));
+                System.out.println("ID Herramienta: " + rs.getInt("id_herramienta")+ 
+                        ", Nombre: " + rs.getString("nombre")+ 
+                        ", Descripcion: " + rs.getString("descripcion")+ 
+                        ", Stock: " + rs.getInt("stock") + 
+                        ", Estado: " + rs.getInt("estado"));
             }
              
-            String sql4 = "SELECT id_empleado AS pidEmp FROM empleado ORDER BY id_empleado";
-            ResultSet rs2 = pStat(conexion, sql4).executeQuery();
-            int primer_idEmpleado;
-            if (rs2.next()) {
-                primer_idEmpleado =  rs2.getInt("pidEmp");
-                System.out.println("Primer id_empleado: " +primer_idEmpleado); 
-            }  
+            String sql4 = "SELECT id_empleado AS pidEmp FROM empleado ORDER BY id_empleado"; //Buscando el ID del primer empleado
+            ResultSet rs4 = pStat(conexion, sql4).executeQuery();
+            
+            if (rs4.next()) {
+                int primer_idEmpleado =  rs4.getInt("pidEmp"); //guardo el valor del id del primer empleado de la BD    
+                
+                String sql4a = "SELECT estado AS estadoEmp FROM empleado WHERE id_empleado = ?";
+                PreparedStatement ps4a = pStat(conexion, sql4a);
+                ps4a.setInt(1, primer_idEmpleado); //reemplaza el "?" con el valor de "primer_idEmpleado"
+                ResultSet rs4a = ps4a.executeQuery();//Resultado de la consulta de "estado" del primer empleado en la BD
+                if(rs4a.next()){           
+                    if(rs4a.getInt("estadoEmp")==1){
+                       String sql6 = "UPDATE empleado SET estado=0 WHERE id_empleado = "+primer_idEmpleado;
+                       int filas6 = pStat(conexion, sql6).executeUpdate();
+                       if(filas6 > 0){
+                            JOptionPane.showMessageDialog(null, "Baja de empleado exitoso!"); 
+                       }
+                       String sql7 = "SELECT * FROM empleado WHERE id_empleado = ?";
+                       PreparedStatement ps7 = pStat(conexion, sql7);
+                       ps7.setInt(1, primer_idEmpleado);
+                       ResultSet rs7 = ps7.executeQuery();
+                            if (rs7.next()) {
+                                System.out.println("Datos del empleado dado de baja: ");
+                                System.out.println("id_empleado: " + rs7.getInt("id_empleado")+ 
+                                      ", DNI: " + rs7.getInt("dni")+
+                                      ", Apellido: " + rs7.getString("apellido")+ 
+                                      ", Nombre: " + rs7.getString("nombre") + 
+                                      ", Acceso: " + rs7.getInt("acceso") + 
+                                      ", Estado: " + rs7.getInt("estado"));
+                            }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Solicitud invalida!\nEl estado actual es: \nBAJA");
+                    }
+                }
+            }
+                
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Error al cargar el Driver"+ex.getMessage());
             
